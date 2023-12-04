@@ -1,0 +1,18 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "strict": true,
+    "outDir": "dist",
+  },
+  "files": [
+    "src/shims.d.ts",
+  ],
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.vue",
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+  ]
+}
