@@ -8,7 +8,7 @@ const resolve = (str: string) => path.resolve(fileURLToPath(new URL('./', import
 export default defineBuildConfig({
   entries: [
     {
-      name: 'dialog',
+      name: 'index',
       input: resolve('src/index'),
     },
   ],

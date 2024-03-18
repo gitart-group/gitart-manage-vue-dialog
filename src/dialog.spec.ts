@@ -3,7 +3,7 @@ import { mount } from '@vue/test-utils'
 import { defineComponent, h } from 'vue'
 
 import {
-  RDialogSpawn,
+  GDialogSpawn,
   gitartDialogPlugin,
   useGDialog,
 } from './index'
@@ -69,7 +69,7 @@ describe('dialog plugin', () => {
       return () => {
         return [
           h('div'),
-          h(RDialogSpawn),
+          h(GDialogSpawn),
         ]
       }
     })
@@ -109,7 +109,7 @@ describe('dialog plugin', () => {
       return () => {
         return [
           h('div'),
-          h(RDialogSpawn),
+          h(GDialogSpawn),
         ]
       }
     })

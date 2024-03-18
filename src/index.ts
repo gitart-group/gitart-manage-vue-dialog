@@ -1,4 +1,4 @@
-import RDialogSpawn from './RDialogSpawn'
+import GDialogSpawn from './GDialogSpawn'
 
 import {
   gitartDialogPlugin,
@@ -10,7 +10,7 @@ import {
 
 export {
   gitartDialogPlugin,
-  RDialogSpawn,
+  GDialogSpawn,
   gitartDialogInjectionKey,
 }
 

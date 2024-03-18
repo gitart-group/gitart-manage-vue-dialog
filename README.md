@@ -9,7 +9,7 @@ You can import all these properties from the `gitart-manage-vue-dialog` module.
 
   - `gitartDialogInjectionKey` - vue injection key for the dialog controller
   - `gitartDialogPlugin` - vue plugin. Usage below
-  - `DialogSpawn` - component to use with plugin. Usage below
+  - `GDialogSpawn` - component to use with plugin. Usage below
   - `IGDialog` - read the codebase for more information
   - `IGDialogItem` - read the codebase for more information
   - `useDialogConfirm` - read the codebase for more information
@@ -20,11 +20,11 @@ You can import all these properties from the `gitart-manage-vue-dialog` module.
 
 App.vue
 ```ts
-import { DialogSpawn } from 'gitart-manage-vue-dialog'
+import { GDialogSpawn } from 'gitart-manage-vue-dialog'
 ```
 
 ```html
-<DialogSpawn />
+<GDialogSpawn />
 ```
 
 main.ts

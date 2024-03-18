@@ -1,20 +1,19 @@
 {
   "name": "gitart-manage-vue-dialog",
-  "version": "0.0.1",
+  "version": "0.0.4",
   "description": "RegData Shared Utilities",
   "type": "module",
-  "main": "./src/index.js",
-  "module": "./src/index.js",
+  "main": "./dist/index.mjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
   "exports": {
-    ".": "./dist/dialog.mjs",
+    ".": {
+      "default": "./dist/index.mjs",
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
+    },
     "./package.json": "./package.json"
-  },
-  "typesVersions": {
-    "*": {
-      ".": [
-        "dist/dialog.d.ts"
-      ]
-    }
   },
   "files": [
     "./dist"
