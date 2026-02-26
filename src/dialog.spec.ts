@@ -1,11 +1,13 @@
 import { describe, expect, it, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
-import { defineComponent, h } from 'vue'
+import { defineComponent, h, PropType } from 'vue'
 
 import {
   GDialogSpawn,
   gitartDialogPlugin,
   useGDialog,
+  useDialogReturnData,
+  useDialogConfirm,
 } from './index'
 
 const wait = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
@@ -130,5 +132,53 @@ describe('dialog plugin', () => {
 
     expect(onRemoveHookFn)
       .toBeCalledTimes(1)
+  })
+
+  it('test type usage for useDialogReturnData and useDialogConfirm', () => {
+    const TestComponent = defineComponent({
+      props: {
+        modelValue: {
+          type: Boolean,
+          required: true,
+        },
+        confirm: {
+          type: Function as PropType<(data: string) => void>,
+          required: true,
+        },
+        otherProp: {
+          type: String,
+          required: true,
+        },
+        optionalProp: {
+          type: Number,
+        },
+      },
+    })
+
+    const TestComponentNoProps = defineComponent({
+      props: {
+        modelValue: Boolean,
+        confirm: Function as PropType<(data: number) => void>,
+      },
+    })
+
+    // Generic inference check
+    const dialogWithResult = useDialogReturnData<string, typeof TestComponent>(TestComponent)
+    // @ts-expect-error otherProp is required
+    dialogWithResult({})
+    dialogWithResult({ otherProp: 'test' })
+
+    const dialogNoProps = useDialogReturnData<number, typeof TestComponentNoProps>(TestComponentNoProps)
+    // Should work without arguments if props are optional
+    dialogNoProps()
+    dialogNoProps({})
+
+    const confirmWithProps = useDialogConfirm(TestComponent)
+    // @ts-expect-error otherProp is required
+    confirmWithProps({})
+    confirmWithProps({ otherProp: 'test' })
+
+    const confirmNoProps = useDialogConfirm(TestComponentNoProps)
+    confirmNoProps()
   })
 })

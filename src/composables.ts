@@ -1,14 +1,14 @@
 import type { ComponentPublicInstance } from 'vue'
 
-import type { IGDialog } from './types'
+import type { IGDialog, DialogCallback, ExtractConfirmData, ExtractComponentProps } from './types'
 
 import { inject } from 'vue'
 
 import { gitartDialogInjectionKey } from './constants'
 
 export const useGDialog = (): IGDialog => {
-  const $dialog = inject(gitartDialogInjectionKey)!
-  return $dialog || {}
+  const $dialog = inject(gitartDialogInjectionKey)
+  return $dialog || {} as IGDialog
 }
 
 /**
@@ -28,16 +28,19 @@ export const useGDialog = (): IGDialog => {
  * const data = await confirmIt({ title: 'Confirm it' }) // data is boolean
  * @returns {Promise<boolean>} - true if the user confirmed the dialog, false if the user canceled the dialog
  */
-export const useDialogConfirm = <
-  T extends { new (): ComponentPublicInstance },
-  P = Omit<InstanceType<T>['$props'], 'modelValue' | 'confirm'>
+export function useDialogConfirm<
+  T,
 >(
   component: T,
   _$dialog?: IGDialog,
-): (props: P) => Promise<boolean> => {
+): DialogCallback<Omit<ExtractComponentProps<T>, 'modelValue' | 'confirm'>, boolean>
+export function useDialogConfirm(
+  component: any,
+  _$dialog?: IGDialog,
+): DialogCallback<any, boolean> {
   const $dialog = _$dialog || useGDialog()
 
-  return (props: P = {} as P): Promise<boolean> => {
+  return ((props: any = {}): Promise<boolean> => {
     return new Promise((resolve) => {
       let confirmed = false
 
@@ -56,7 +59,7 @@ export const useDialogConfirm = <
         },
       })
     })
-  }
+  }) as any
 }
 
 /**
@@ -76,23 +79,32 @@ export const useDialogConfirm = <
  * const data = await confirmIt({ title: 'Confirm it' }) // data is number or null
  * @returns Promise<T | null> - data that the dialog returns or null if the user canceled the dialog
  */
-export const useDialogReturnData = <
+export function useDialogReturnData<
   D,
-  T extends { new (): ComponentPublicInstance },
-  P = Omit<InstanceType<T>['$props'], 'confirm' | 'modelValue'>
+  T = any,
 >(
   component: T,
   _$dialog?: IGDialog,
-): (props: P) => Promise<D | null> => {
+): DialogCallback<Omit<ExtractComponentProps<T>, 'confirm' | 'modelValue'>, D | null>
+export function useDialogReturnData<
+  T,
+>(
+  component: T,
+  _$dialog?: IGDialog,
+): DialogCallback<Omit<ExtractComponentProps<T>, 'confirm' | 'modelValue'>, any>
+export function useDialogReturnData(
+  component: any,
+  _$dialog?: IGDialog,
+): DialogCallback<any, any> {
   const $dialog = _$dialog || useGDialog()
 
-  return (props: P): Promise<D | null> => {
+  return (props: any = {}): Promise<any> => {
     return new Promise((resolve) => {
       let confirmed = false
 
       $dialog.addDialog(component, {
         ...props,
-        confirm: (data: D) => {
+        confirm: (data: any) => {
           confirmed = true
           resolve(data)
         },

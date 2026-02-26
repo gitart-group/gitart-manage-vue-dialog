@@ -3,8 +3,22 @@ import type {
   ShallowUnwrapRef,
 } from 'vue'
 
+export type ExtractComponentProps<T> = T extends { new (...args: any): any }
+  ? InstanceType<T>['$props']
+  : T extends (props: infer P, ...args: any) => any
+    ? P
+    : any
+
+export type ExtractConfirmData<T> = ExtractComponentProps<T> extends { confirm: (data: infer D) => any }
+  ? (unknown extends D ? any : D)
+  : any
+
+export type DialogCallback<P, R> = {} extends P
+  ? (props?: P) => Promise<R>
+  : (props: P) => Promise<R>
+
 export interface IGDialogItem {
-  component: ShallowUnwrapRef<{ new (): ComponentPublicInstance }>
+  component: ShallowUnwrapRef<any>
   id: number
   props: {
     modelValue: boolean
@@ -13,11 +27,10 @@ export interface IGDialogItem {
 }
 
 type DialogAddMethod = <
-  T extends { new (): ComponentPublicInstance },
-  P = Omit<InstanceType<T>['$props'], 'modelValue' | 'confirm'>
+  T = any,
 >(
   component: T,
-  props: P,
+  props: Omit<ExtractComponentProps<T>, 'modelValue'>,
   params?: {
     onRemoveHook?: () => void
   }) => IGDialogItem
@@ -31,16 +44,13 @@ interface IGDialogMethods {
   /**
    * method for adding dialog
    *
-   * add first generic type for component to make props type safe. Otherwise, you can pass any props
-   * without any type checking.
-   *
-   * `addDialog<typeof CloneEntityDialog>(CloneEntityDialog, ...)`
+   * props type will be inferred from the component.
    *
    * @example
    * const $dialog = useGDialog()
    * // ..
-   * $dialog.addDialog<typeof CloneEntityDialog>(CloneEntityDialog, {
-   *  enities,
+   * $dialog.addDialog(CloneEntityDialog, {
+   *  entities,
    * })
    */
   addDialog: DialogAddMethod
