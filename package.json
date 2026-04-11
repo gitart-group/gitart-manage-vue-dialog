@@ -1,6 +1,6 @@
 {
   "name": "gitart-manage-vue-dialog",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Dialog Utilities",
   "type": "module",
   "main": "./dist/index.mjs",

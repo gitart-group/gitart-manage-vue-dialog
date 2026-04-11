@@ -4,11 +4,10 @@ import type { IGDialog, DialogCallback, ExtractConfirmData, ExtractComponentProp
 
 import { inject } from 'vue'
 
-import { gitartDialogInjectionKey } from './constants'
+import { gitartDialogInjectionFallback, gitartDialogInjectionKey } from './constants'
 
 export const useGDialog = (): IGDialog => {
-  const $dialog = inject(gitartDialogInjectionKey)
-  return $dialog || {} as IGDialog
+  return inject(gitartDialogInjectionKey, gitartDialogInjectionFallback)
 }
 
 /**
